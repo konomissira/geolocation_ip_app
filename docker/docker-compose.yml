@@ -43,7 +43,7 @@ services:
             - ../dags:/opt/airflow/dags
             - ../src:/opt/airflow/src
             - ../config:/opt/airflow/config
-            - /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
+            #- /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
             - airflow_logs:/opt/airflow/logs
             - airflow_plugins:/opt/airflow/plugins
 
@@ -68,7 +68,7 @@ services:
             - ../dags:/opt/airflow/dags
             - ../src:/opt/airflow/src
             - ../config:/opt/airflow/config
-            - /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
+            #- /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
             - airflow_logs:/opt/airflow/logs
             - airflow_plugins:/opt/airflow/plugins
 
@@ -89,7 +89,7 @@ services:
             - ../dags:/opt/airflow/dags
             - ../src:/opt/airflow/src
             - ../config:/opt/airflow/config
-            - /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
+            #- /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
             - airflow_logs:/opt/airflow/logs
             - airflow_plugins:/opt/airflow/plugins
 
@@ -112,7 +112,7 @@ services:
             - ../dags:/opt/airflow/dags
             - ../src:/opt/airflow/src
             - ../config:/opt/airflow/config
-            - /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
+            #- /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
             - airflow_logs:/opt/airflow/logs
             - airflow_plugins:/opt/airflow/plugins
 
