@@ -166,6 +166,10 @@ Solution: map absolute path to `/opt/airflow/data` in Docker volumes.
 
 ## 📸 Screenshots
 
+### Architecture Diagram
+
+![Architecture](docs/architecture_diagram.jpg)
+
 ### Airflow DAG Running
 
 ![DAG Trigger](docs/airflow_dags_time.jpg)
