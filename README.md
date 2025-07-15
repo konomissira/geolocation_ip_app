@@ -185,7 +185,3 @@ Solution: map absolute path to `/opt/airflow/data` in Docker volumes.
 ## 📄 License
 
 MIT License © 2025 Kono Missira
-
-## 🔗 GitHub Repository
-
-[👉 View on GitHub](https://github.com/konomissira/geolocation_ip_app.git)
