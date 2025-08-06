@@ -106,6 +106,13 @@ DB_PASS=your_password
 
 ## 🐳 Run the Project
 
+**Clone the repository:**
+
+```bash
+git clone https://github.com/konomissira/geolocation_ip_app.git
+cd geolocation_ip_app
+```
+
 ### 1. Build & Start Services
 
 ```bash
