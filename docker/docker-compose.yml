@@ -112,9 +112,28 @@ services:
             - ../dags:/opt/airflow/dags
             - ../src:/opt/airflow/src
             - ../config:/opt/airflow/config
-            #- /Users/mahamadoucamara/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
+            #- /Users/username/Desktop/personal_project/geolocation_ip_app/data:/opt/airflow/data
             - airflow_logs:/opt/airflow/logs
             - airflow_plugins:/opt/airflow/plugins
+
+    fastapi-service:
+        build:
+            context: ../
+            dockerfile: docker/Dockerfile.fastapi
+        container_name: fastapi_service
+        restart: always
+        depends_on:
+            - redis
+        env_file:
+            - ../config/.env
+        environment:
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
+            - REDIS_QUEUE=ip_queue
+        ports:
+            - "8000:8000"
+        volumes:
+            - ../src:/app/src
 
 volumes:
     pg_data:

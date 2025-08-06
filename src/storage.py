@@ -73,5 +73,5 @@ if __name__ == "__main__":
     if conn:
         create_table(conn)
         insert_data(conn, sample_data)
-        print("✅ Data inserted successfully.")
+        print("Data inserted successfully.")
         conn.close()
