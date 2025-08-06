@@ -1,120 +1,119 @@
-# 📍 Real-Time IP Geolocation Data Pipeline
+# 📍 Real-Time IP Geolocation Data Pipeline (Updated Version)
 
-This project builds a real-time data pipeline to ingest, enrich, and store IP geolocation data using:
+This project demonstrates an **event-driven real-time data pipeline** that ingests, enriches, and stores IP geolocation data using:
 
--   **Apache Airflow** (DAG orchestration)
--   **PostgreSQL** (Storage)
+-   **FastAPI** (API for real-time IP ingestion)
+-   **Redis** (Queue for decoupled processing)
+-   **Apache Airflow** (Workflow orchestration)
+-   **PostgreSQL** (Data storage)
 -   **Docker Compose** (Containerisation)
 -   **IPStack API** (IP enrichment)
 
-## Features
+## ✅ Why This Project Matters
 
--   Ingest data from a sample log file and simulate live data with randomly generated IPs.
--   Enrich IPs using the IPStack API.
--   Store enriched data in PostgreSQL.
--   Fully containerised using Docker.
--   Airflow DAG runs automatically every 10 minutes.
+Many companies need to track user IP locations for:
+
+-   **Fraud detection** (flagging suspicious logins)
+-   **Personalisation** (region-specific content)
+-   **Security monitoring** (detect unusual access patterns)
+
+This pipeline mimics real-world architectures used in **finance, e-commerce, and streaming platforms**.
+
+---
+
+## 🧠 Features
+
+-   **FastAPI** endpoint to accept IPs in real-time.
+-   **Redis queue** for decoupled ingestion.
+-   **Airflow DAG** to orchestrate enrichment and storage.
+-   **Enrich IPs** with city, country, latitude & longitude using IPStack API.
+-   **Store results** in PostgreSQL for analytics.
+-   Fully **Dockerised** for easy setup.
+
+---
 
 ## 📁 Project Structure
 
 ```
 geolocation_ip_app/
 ├── README.md
-├── config
-├── dags
-│   └── geo_dag_pipeline.py
-├── data
+├── config/
+├── dags/
+│   ├── geo_dag_pipeline.py         # Original DAG (random IPs)
+│   └── ip_dag_app.py              # NEW DAG (fetch from Redis queue)
+├── data/
 │   └── sample_of_logs.txt
-├── docker
-│   └── docker-compose.yml
-├── docs
+├── docker/
+│   ├── docker-compose.yml
+│   └── Dockerfile.fastapi
+├── docs/
+│   ├── architecture_diagram.jpg
 │   ├── airflow_dags_time.jpg
 │   ├── airflow_output.jpg
 │   ├── dags_workflow_graph.jpg
+│   ├── demo_pipeline.gif
 │   └── ip_geolocation_table.jpg
 ├── requirements.txt
-├── src
+├── src/
+│   ├── ingestion.py               # Original ingestion (random IPs)
+│   ├── ingestion_app.py           # NEW ingestion (fetch from Redis)
+│   ├── api_service_app.py         # NEW FastAPI service
 │   ├── enrichment.py
-│   ├── ingestion.py
 │   ├── storage.py
 │   └── utils.py
-└── tests
+└── tests/
 ```
 
-## 📦 Clone the Repository
+---
 
-```bash
-git clone https://github.com/konomissira/geolocation_ip_app.git
-cd geolocation_ip_app
-```
+## ✅ Updated Tech Stack
+
+-   **FastAPI** – Real-time ingestion API
+-   **Redis** – Queue for IP processing
+-   **Apache Airflow** – Orchestration (batch & real-time hybrid)
+-   **PostgreSQL** – Persistent storage
+-   **Docker Compose** – Containerised environment
+-   **IPStack API** – IP enrichment service
+
+---
 
 ## ⚙️ Prerequisites
 
--   Python 3.9 or above
+-   Python **3.9+**
 -   Docker & Docker Desktop
--   Free IPStack API Key
+-   Free [IPStack API Key](https://ipstack.com/)
+
+---
 
 ## 🔐 Environment Variables
 
-This project uses **two `.env` files**:
-
-1. `config/.env` — used by Airflow inside the DAG.
-2. `docker/.env` — used by Docker Compose services.
-
-Both files are ignored by Git to keep credentials safe (`.gitignore`).
-
-You’ll need to create them manually like the following:
+Create `config/.env` with:
 
 ```env
-# Inside config/.env
-GEO_IP_API_KEY=API_KEY
+GEO_IP_API_KEY=your_ipstack_api_key
+POSTGRES_USER=your_postgre_user
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=database_name
 
-POSTGRES_USER=postgres_user
-POSTGRES_PASSWORD=postgres_password
-POSTGRES_DB=postgres_database_name
-
-# Database Credentials
 DB_HOST=postgres
 DB_PORT=5432
 DB_NAME=database_name
-DB_USER=database_username
-DB_PASS=database_password
+DB_USER=username
+DB_PASS=your_password
 ```
 
-```env
-# Inside docker/.env
-POSTGRES_USER=postgres_username
-POSTGRES_PASSWORD=postgres_password
-POSTGRES_DB=postgres_database_name
-```
-
-## Set Up Virtual Environment
-
-### macOS / Linux
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-### Windows
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
+---
 
 ## 🐳 Run the Project
 
+### 1. Build & Start Services
+
 ```bash
-# Build and start services
 cd docker
-docker compose up -d --build
+docker-compose up --build
 ```
 
-### Create Airflow User (first-time only)
+### 2. Create Airflow Admin User (First Time Only)
 
 ```bash
 docker exec -it airflow_webserver airflow users create \
@@ -122,69 +121,71 @@ docker exec -it airflow_webserver airflow users create \
   --firstname Data \
   --lastname Engineer \
   --role Admin \
-  --email airflow@example.com \
+  --email myemail@example.com \
   --password airflow
 ```
 
-Then access Airflow UI via: [http://localhost:8080](http://localhost:8080)  
+Access Airflow UI at: [http://localhost:8080](http://localhost:8080)  
 Login: `airflow / airflow`
 
----
-
-## ⏱️ DAG Overview
-
-**DAG ID:** `geolocation_pipeline`  
-**Schedule:** Every 10 minutes (`*/10 * * * *`)
-
-### Tasks:
-
-1. `ingest`: Generate random IPs.
-2. `enrich`: Enrich IPs via IPStack.
-3. `store`: Insert into PostgreSQL.
+FastAPI Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ---
 
-## Achievements
+## ✅ How It Works
 
--   Built full pipeline with Airflow
--   Generated and enriched IP data
--   Connected to PostgreSQL
--   Automated the DAG
--   Solved Docker volume issues
--   Fully reproducible and containerised
+![Demo Pipeline](docs/demo_geo_app.gif)
 
-## Future Roadmap
+### New Workflow:
 
--   🌐 Accept IPs from web apps (log collector or queue)
--   🔔 Webhooks or REST APIs to receive real-time IPs
--   📦 Use Kafka, AWS Kinesis for log streams
+1. Send IPs to FastAPI:
 
-## Troubleshooting Notes
+```bash
+curl -X POST "http://localhost:8000/ingest-ip" -H "Content-Type: application/json" -d '{"ip": "8.8.8.8"}'
+```
 
-One issue was making the file visible in the container (`sample_of_logs.txt`).  
-Solution: map absolute path to `/opt/airflow/data` in Docker volumes.
+OR multiple IPs:
 
-## 📸 Screenshots
+```bash
+curl -X POST "http://localhost:8000/ingest-ips" -H "Content-Type: application/json" -d '{"ips": ["8.8.8.8", "1.1.1.1"]}'
+```
 
-### Architecture Diagram
+2. IPs are added to Redis queue (`ip_queue`).
 
-![Architecture](docs/architecture_diagram.jpg)
+3. Airflow DAG (`ip_queue_pipeline`) fetches from Redis → enriches via IPStack → stores in PostgreSQL.
 
-### Airflow DAG Running
+4. Query PostgreSQL:
 
-![DAG Trigger](docs/airflow_dags_time.jpg)
+```bash
+docker exec -it geo_postgres psql -U kono -d geo_db
+SELECT * FROM ip_geolocation;
+```
 
-### DAG Workflow Graph
+---
 
-![DAG Graph](docs/dags_workflow_graph.jpg)
+## ⏱️ DAGs Overview
 
-### Airflow Task Output
+-   **geo_dag_pipeline** → Generates random IPs (original version)
+-   **ip_queue_pipeline** → Pulls IPs from Redis (new version)
 
-![Airflow Output](docs/airflow_output.jpg)
+Schedule: Every 10 minutes (configurable)
 
-### PostgreSQL Table View
+---
 
-![Postgres Table](docs/ip_geolocation_table.jpg)
+## 📸 Architecture
+
+![Architecture Diagram](docs/architecture_diagram.png)
+
+---
+
+## ✅ Future Roadmap
+
+-   Event-driven DAG triggering via Airflow API
+-   Integrate Kafka or AWS Kinesis for log streaming
+-   Add Grafana dashboards for analytics
+-   Implement ML model for anomaly detection
+
+---
 
 ## 📄 License
 
